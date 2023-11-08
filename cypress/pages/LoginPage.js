@@ -12,21 +12,24 @@ class LoginPage{
         cy.visit('/my-account/');
     };
 
-    doLoginAdmin = (json) => { //realiza el login en la aplicacion de acuerdo a los datos cargados en el archivo "LoginAdminExample.json"
+    doSuccesslogin = (json) => { 
     cy.get(LoginLocators.inpUsernameLogin).type(json.username);
     cy.get(LoginLocators.inpPassLogin).type(json.pass);
     cy.get(LoginLocators.btnIniciarSesionLogin).click();
 };
-    doLogin = (json) => { //realiza el login en la aplicacion de acuerdo a los datos cargados en el archivo "LoginExample.json"
+    doFailedlogin = (json) => { 
     cy.get(LoginLocators.inpUsernameLogin).type(json.username);
     cy.get(LoginLocators.inpPassLogin).type(json.pass);
-    cy.get(LoginLocators.btnIniciarSesionLogin).click();
+    cy.get(LoginLocators.btnIniciarSesionLogin).click(); 
+    cy.get(LoginLocators.errorMessage).should('contain.text', 'Error');
 };
-    doLoginScenarioOutline = (user,pass) => { //realiza el login en la aplicacion de acuerdo a los datos cargados en el escenario Outline, parametrizando así variables
+    doLoginScenarioOutline = (user,pass) => { 
     cy.get(LoginLocators.inpUsernameLogin).type(user);
     cy.get(LoginLocators.inpPassLogin).type(pass);
     cy.get(LoginLocators.btnIniciarSesionLogin).click();
 };
+    failedLoginScenarioOutline = () => { 
+    cy.get(LoginLocators.errorMessage).should('contain.text', 'Error');
+};
 }
-
 export default new LoginPage(); 
