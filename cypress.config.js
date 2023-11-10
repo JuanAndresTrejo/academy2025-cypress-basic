@@ -27,7 +27,7 @@ module.exports = defineConfig({
     //specPattern: "cypress/integration/*.*.js",
     baseUrl: "https://practice.automationtesting.in",
     //baseUrl: "https://www.saucedemo.com",
-    projectId: "CYPRESS_ID_KEY",
+    projectId: "jmhixd",
     //viewportWidth: 1920,
     //viewportHeight: 1280,
     chromeWebSecurity: false,
@@ -36,3 +36,4 @@ module.exports = defineConfig({
     },
   },
 });
+
