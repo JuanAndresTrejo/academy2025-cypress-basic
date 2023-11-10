@@ -15,7 +15,7 @@
     "cy:spec": "cypress run --spec **/*.spec.js",
     "cy:reporter": "cypress run --reporter reporters/lippia-reporter/lippia-reporter.js",
     "cy:local": "./node_modules/.bin/cypress run",
-    "cy:run": "cypress run --record --key CYPRESS_RECORD_KEY"
+    "cy:run": "cypress run --record --key=c8fc45fe-b889-433d-a2b1-74dc97ccc44d"
   },
   "keywords": [
     "cypress"
@@ -29,8 +29,8 @@
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^18.0.6",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.1.5",
-    "@shelex/cypress-allure-plugin": "^2.34.0",
-    "cypress": "^13.3.1",
+    "@shelex/cypress-allure-plugin": "^2.5.0",
+    "cypress": "^13.4.0",
     "esbuild": "^0.16.4",
     "multiple-cucumber-html-reporter": "^3.0.1"
   }

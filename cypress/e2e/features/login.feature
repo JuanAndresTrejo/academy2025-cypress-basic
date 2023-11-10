@@ -1,18 +1,18 @@
 Feature: 01 - Crowdar Academy 2023 - Login
   @login
-  Scenario: Login como admin
-    Given  Me logueo como admin correctamente
+  Scenario: El cliente ingresa a su cuenta
+    Given  El cliente se logea exitosamente
   
   @login
-  Scenario: Login como usuario normal
-    Given  Me logueo como usuario correctamente
+  Scenario: El cliente ingresa mal su contraseña
+    Given  El cliente no puede ingresar a su cuenta por su contraseña
   
   @login
-  Scenario Outline: Login usuario - Escenario Outline 
-    Given Navego al sitio automationtesting
-    When Me logueo como usuario con user '<user>' y pass '<pass>' 
-    Then Valido saludo de bienvenida en el Título
+  Scenario Outline: El cliente ingresa mal su email
+    Given El cliente se dirige al login
+    When El cliente ingresa su usuario '<user>' y contraseña '<pass>' 
+    Then El cliente no puede ingresar a su cuenta por su email
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2023!       |
+          | user                       |   pass                |
+          | germancorreopru@gmail.com  |   123456crowdar       |

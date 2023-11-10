@@ -1,0 +1,5 @@
+{
+    "email_Registro": "#reg_email",
+    "password_Registro": "#reg_password",
+    "boton_Registro": "#customer_login > div.u-column2.col-2 > form > p.woocomerce-FormRow.form-row > input.woocommerce-Button.button"
+}
