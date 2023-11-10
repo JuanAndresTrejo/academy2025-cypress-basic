@@ -15,7 +15,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   };
 
     successRegistroPassword= (json) => { 
-      for (let i = 0; i <= 5; i++) {
+      for (let i = 0; i <= 5; i++) { //Este "for" se puso por que el boton de registro en ocaciones no deja que que le clickiemos y asi logre que me dejara interactuar con el boton
         cy.get(RegistrosLocators.password_Registro).type(json.password);
       }
       cy.get(RegistrosLocators.boton_Registro).click({force: true});
@@ -31,7 +31,7 @@ Cypress.on('uncaught:exception', (err, runnable) => {
   };
 
     failRegistroPassword = (password) => { 
-      for (let i = 0; i <= 5; i++) {
+      for (let i = 0; i <= 5; i++) { //Este "for" se puso por que el boton de registro en ocaciones no deja que que le clickiemos y asi logre que me dejara interactuar con el boton
       cy.get(RegistrosLocators.password_Registro).type(password);
       }
       cy.get(RegistrosLocators.boton_Registro).click({force: true});
