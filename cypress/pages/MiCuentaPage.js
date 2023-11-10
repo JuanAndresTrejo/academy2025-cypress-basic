@@ -8,7 +8,7 @@ import MiCuentaLocators from './locators/MiCuentaLocators.json';
 
 class MiCuentaPage {
   dashboard = () => { 
-    cy.get(MiCuentaLocators.clickDashboard).click();
+    cy.get(MiCuentaLocators.clickDashboard).click({force: true});
     cy.get(MiCuentaLocators.dashboard).should('contain.text', 'Hello');
 };
 

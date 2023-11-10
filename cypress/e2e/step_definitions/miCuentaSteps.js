@@ -22,6 +22,6 @@ Then('El cliente ve sus Ordenes', () => {
 })
 
 Then('El cliente esta fuera de su cuenta', () => {
-    MiCuentaPage.verificarRangoBusquedaShop();
+    MiCuentaPage.logout();
 });
 

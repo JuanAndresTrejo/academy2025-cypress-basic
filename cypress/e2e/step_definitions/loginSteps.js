@@ -5,8 +5,6 @@ Given('El cliente se logea exitosamente', () => {
     cy.fixture('examples/loginExitoso.json').then((json) => {
         cy.visit("/my-account/");
         LoginPage.doSuccesslogin(json);
-       
-
     })
 })
 
@@ -14,7 +12,6 @@ Given('El cliente no puede ingresar a su cuenta por su contraseña', () => {
     cy.fixture('examples/loginFallido.json').then((json) => {
         cy.visit("/my-account/");
         LoginPage.doFailedlogin(json);
-
     })
 })
 
@@ -22,7 +19,7 @@ Given('El cliente se dirige al login', () => {
     cy.visit("/my-account/");
 })
 
-When('El cliente ingresa su usuario {string} y contraseña {string}', (user,pass) => {
+When("El cliente ingresa su usuario {string} y contraseña {string}", (user,pass) => {
     LoginPage.doLoginScenarioOutline(user,pass);
 })
 

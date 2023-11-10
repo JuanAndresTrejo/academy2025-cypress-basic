@@ -1,4 +1,4 @@
-Feature: 02 - Crowdar Academy 2023 - Shop Store
+Feature: 02 - Crowdar Academy 2023 - Mi Cuenta
 
     Background:
         Given El cliente se encuentra en el login
