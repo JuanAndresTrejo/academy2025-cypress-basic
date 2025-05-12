@@ -9,8 +9,7 @@ import LoginLocators from './locators/LoginLocators.json'
 class LoginPage{
 
     visitarPagina = () => { 
-        cy.visit('/en/login');
-        cy.get('.cl-create-account > .cl-d-block').click();
+        cy.visit('/my-account/');
     };
 
     doLoginAdmin = (json) => { //realiza el login en la aplicacion de acuerdo a los datos cargados en el archivo "LoginAdminExample.json"

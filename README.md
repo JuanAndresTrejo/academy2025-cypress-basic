@@ -1,4 +1,4 @@
-Fork para Academy 2024-2S - Basic Automation Testing
+Fork para Academy 2025-!S - Basic Automation Testing
 
 # Comandos Utiles
  npm init

@@ -1,5 +1,5 @@
 {
-    "inpUsernameLogin": "#email",
-    "inpPassLogin": ".cl-form-group__password-input > #password",
-    "btnIniciarSesionLogin": ":nth-child(2) > .cl-btn"
+    "inpUsernameLogin": "#username",
+    "inpPassLogin": "#password",
+    "btnIniciarSesionLogin": ":nth-child(3) > .woocommerce-Button"
 }

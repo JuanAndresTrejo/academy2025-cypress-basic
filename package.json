@@ -22,20 +22,20 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JuanAndresTrejo/academy2024-cypress-basic.git"
+    "url": "git+https://github.com/JuanAndresTrejo/academy2025-cypress-basic.git"
   },
   "author": "cucumber",
   "license": "ISC",
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^20.0.6",
+    "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.0",
     "@shelex/cypress-allure-plugin": "^2.40.2",
-    "cypress": "^13.15.0",
-    "esbuild": "^0.16.4",
+    "cypress": "^14.3.3",
+    "esbuild": "^0.25.4",
     "multiple-cucumber-html-reporter": "3.0.1"
   },
   "bugs": {
-    "url": "https://github.com/JuanAndresTrejo/academy2024-cypress-basic/issues"
+    "url": "https://github.com/JuanAndresTrejo/academy2025-cypress-basic/issues"
   },
-  "homepage": "https://github.com/JuanAndresTrejo/academy2024-cypress-basic#readme"
+  "homepage": "https://github.com/JuanAndresTrejo/academy2025-cypress-basic#readme"
 }

@@ -23,10 +23,10 @@ async function setupNodeEvents(on, config) {
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents,
-    specPattern: "cypress/e2e/features/*.feature",
+    //specPattern: "cypress/e2e/features/*.feature",
     //specPattern: "cypress/integration/*.*.js",
-    // baseUrl: "https://clockify.me",
-    baseUrl: "https://app.clockify.me",
+    specPattern: ["cypress/e2e/features/*.feature" , "cypress/integration/*.*.js"],
+    baseUrl: "https://practice.automationtesting.in",
     projectId: "CYPRESS_ID_KEY",
     //viewportWidth: 1920,
     //viewportHeight: 1280,

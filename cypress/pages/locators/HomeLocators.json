@@ -1,5 +1,6 @@
 {
-    "logoHome":":nth-child(2) > .cl-logo-mob > .cl-ml-2",
-    "messageEntries":"message-entries",
-    "messageHome":".cl-h1"
+    "tituloHome" : ".woocommerce-MyAccount-content > p:nth-of-type(1)",
+    "btnBookStore" : ":nth-child(6) > .element-list > .menu-list > #item-2",
+    "btnGoToForm" : ":nth-child(2) > .group-header > .header-wrapper",
+    "btnPracticeForm" : ":nth-child(2) > .element-list > .menu-list > #item-0"
 }
