@@ -12,4 +12,4 @@ Feature: 02 - Crowdar Academy 2025 - Shop Store
 
         Examples:
           | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2023!       |
+          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
