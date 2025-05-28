@@ -9,7 +9,21 @@ class TestCasesPage {
     // Navegación básica
     visitarPaginaTestCases() {
         cy.visit('/test-cases/');
-        cy.get(TestCasesLocators.tituloTestCases).should('be.visible');
+        
+        // Esperar a que la página cargue completamente y las animaciones terminen
+        cy.wait(2000); // Esperar a que las animaciones CSS terminen
+        
+        // Verificar que al menos un h2 sea visible (puede haber múltiples h2 en la página)
+        cy.get('h2').should('exist');
+        
+        // Verificar que el contenedor principal esté visible
+        cy.get(TestCasesLocators.contenedorPrincipal, { timeout: 10000 })
+          .should('be.visible');
+          
+        // Verificar que existan secciones de acordeón
+        cy.get(TestCasesLocators.seccionesAcordeon, { timeout: 10000 })
+          .should('exist')
+          .and('be.visible');
     }
 
     extraerInformacionCasos() {
@@ -21,8 +35,10 @@ class TestCasesPage {
             'MY ACCOUNT - REGISTRATION': TestCasesLocators.seccionRegistro
         };
 
-        // Esperar a que la página esté completamente cargada
-        return cy.get(TestCasesLocators.tituloTestCases).should('be.visible')
+        // Esperar a que la página esté completamente cargada usando un selector más confiable
+        return cy.get(TestCasesLocators.seccionesAcordeon, { timeout: 10000 })
+            .should('exist')
+            .and('be.visible')
             .then(() => {
                 // Procesar cada sección secuencialmente
                 return Object.entries(secciones).reduce((promise, [nombreSeccion, selector]) => {
