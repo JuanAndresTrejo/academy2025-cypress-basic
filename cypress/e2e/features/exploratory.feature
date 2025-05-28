@@ -3,11 +3,10 @@ Feature: Exploración Automática de Elementos - Scraper Inteligente
     Como QA automatizador
     Quiero mapear automáticamente todos los elementos de la página
     Para generar locators optimizados y tener un inventario completo
-
     Background:
         Given  Navego al sitio de automationtesting
     
-    @exploratory @scraper @mapping
+    @Ignore @temporal
     Scenario: Exploración completa de la página home con mapeo de elementos
         When Ingreso user '<user>' y pass '<pass>' 
         And Intercepto y monitoreo requests de red durante la exploración
@@ -29,7 +28,7 @@ Feature: Exploración Automática de Elementos - Scraper Inteligente
           | user                                            |   pass                |
           | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
 
-    @exploratory @network @monitoring
+    @Ignore @temporal
     Scenario: Monitoreo de requests de red
         When Ingreso user '<user>' y pass '<pass>'
         When Intercepto y monitoreo requests de red durante la exploración

@@ -15,19 +15,19 @@ Feature: 03 - Crowdar Academy 2025 - Test Cases
         Then Verifico que existan 18 casos de prueba
         And Verifico que el primer caso sea "Home Page with three Sliders only"
 
-    @Ignore
+    @focus
     Scenario: Verificar sección My Account - Login
         When Expando la sección "MY ACCOUNT - LOGIN"
         Then Verifico que existan 8 casos de prueba de login
         And Verifico que incluya pruebas de "Log-in with valid username and password"
 
-    @Ignore
+    @focus
     Scenario: Verificar sección Shop
         When Expando la sección "SHOP"
         Then Verifico que existan 12 casos de prueba de shop
         And Verifico que incluya "Shop-Filter By Price Functionality"
 
-    @Ignore
+    @focus
     Scenario: Verificar sección My Account - Registration
         When Expando la sección "MY ACCOUNT - REGISTRATION" 
         Then Verifico que existan 5 casos de prueba de registro
