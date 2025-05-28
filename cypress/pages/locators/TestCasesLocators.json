@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "description": "Locators para la página de Test Cases",
+    "generatedAt": "2025-05-28T00:00:00.000Z"
+  },
+  "navigation": {
+    "testCasesMenu": "#menu-item-224",
+    "homeLink": "#menu-item-40"
+  },
+  "content": {
+    "pageTitle": ".page-title",
+    "mainContent": ".main-content",
+    "testCasesList": ".test-cases-list"
+  },
+  "buttons": {
+    "backToHome": ".back-to-home",
+    "viewDetails": ".view-details"
+  }
+} 

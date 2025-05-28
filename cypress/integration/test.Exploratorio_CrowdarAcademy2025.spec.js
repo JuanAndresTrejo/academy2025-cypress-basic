@@ -12,15 +12,14 @@ Cypress.on('uncaught:exception', (err, runnable) => {
 });
 
 
-it('Test_Exploratorio', function() {
-  cy.visit('https://practice.automationtesting.in/my-account/');
-  cy.get('#username').clear('academyCypress_usuarioNormal@crowdaronline.com');
-  cy.get('#username').type('academyCypress_usuarioNormal@crowdaronline.com');
-  cy.get('#password').clear('Crowdar.2025!');
-  cy.get('#password').type('Crowdar.2025!');
-  cy.get(':nth-child(3) > .woocommerce-Button').click();
-  cy.get('.woocommerce-MyAccount-navigation-link--dashboard > a').click();
-  cy.get('#site-logo > a > img').click();
-  // cy.get('.n2-ss-slide-34 > .n2-ss-slide-background > .n2-ss-slide-background-image').click();
-  // cy.get('.n2-ss-slide-35 > .n2-ss-slide-background > .n2-ss-slide-background-image').click();
+it('Add_to_basket_slide_menudrawer_myaccount', function() {
+  cy.visit('https://practice.automationtesting.in/');
+  // cy.get('.post-160 > .button').click();
+  // cy.get('.post-163 > .button').click();
+  // cy.get('.post-165 > .button').click();
+  cy.get('#n2-ss-6-arrow-next > .n2-ow').click();
+  cy.get('#n2-ss-6-arrow-next > .n2-ow').click();
+  cy.get('#n2-ss-6-arrow-next > .n2-ow').click();
+  cy.get('#menu-icon').click();
+  cy.get('#menu-item-50 > a').click();
 });
