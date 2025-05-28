@@ -176,7 +176,7 @@ module.exports = defineConfig({
     hideXHRInCommandLog: false,
     specPattern: ["cypress/e2e/features/**/*.feature"],
     baseUrl: "http://practice.automationtesting.in",
-    projectId: "avumub",
+    projectId: "Id_Key",
     viewportWidth: 1920,
     viewportHeight: 1280,
     chromeWebSecurity: false,

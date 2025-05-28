@@ -6,7 +6,7 @@ Feature: Exploración Automática de Elementos - Scraper Inteligente
     Background:
         Given  Navego al sitio de automationtesting
     
-    @Ignore @temporal
+    @exploratory @navigation @home-page
     Scenario: Exploración completa de la página home con mapeo de elementos
         When Ingreso user '<user>' y pass '<pass>' 
         And Intercepto y monitoreo requests de red durante la exploración
@@ -28,7 +28,7 @@ Feature: Exploración Automática de Elementos - Scraper Inteligente
           | user                                            |   pass                |
           | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
 
-    @Ignore @temporal
+    @exploratory @navigation @network
     Scenario: Monitoreo de requests de red
         When Ingreso user '<user>' y pass '<pass>'
         When Intercepto y monitoreo requests de red durante la exploración
