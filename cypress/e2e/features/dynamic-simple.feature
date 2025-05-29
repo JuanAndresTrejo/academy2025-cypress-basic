@@ -21,5 +21,6 @@ Característica: Análisis Dinámico Simple
   @workflow @basico
   Escenario: Workflow básico
     Cuando inicio el workflow de análisis automatizado
+    Cuando configuro las opciones de procesamiento completo
     Cuando ejecuto el análisis con generación de reportes
     Entonces verifico que el workflow se completó exitosamente 

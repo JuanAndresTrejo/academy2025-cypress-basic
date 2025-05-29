@@ -8,13 +8,6 @@ import { Given, When, Then, And } from "@badeball/cypress-cucumber-preprocessor"
 //     cy.visit('/my-account/', { failOnStatusCode: false });
 // });
 
-Given("EsBut que la página esté cargada", () => {
-    cy.log('⌛ Esperando que la página cargue...');
-    cy.get('body').should('be.visible');
-    cy.get('#menu-item-50').should('be.visible');
-});
-
-
 Then("Verifico que inicio sesión exitosamente", () => {
     cy.log('✅ Verificando inicio de sesión exitoso');
     cy.get('.woocommerce-MyAccount-content')
@@ -22,7 +15,7 @@ Then("Verifico que inicio sesión exitosamente", () => {
         .and('contain.text', 'Hello');
 });
 
-When("Hago click en el menú MAnd Account", () => {
+When("Hago click en el menú My Account", () => {
     cy.log('🔍 Ejecutando: Hago click en el menú My Account');
     cy.get('#menu-item-50').click();
 });
@@ -67,14 +60,16 @@ When("Hago click en el botón View", () => {
     cy.get('.woocommerce-orders-table__cell-order-actions .button.view').first().click();
 });
 
-Then("Verifico que puedo ver los detalles del pedido, cliente And facturación", () => {
+Then("Verifico que puedo ver los detalles del pedido, cliente y facturación", () => {
     cy.log('🔍 Ejecutando: Verifico que puedo ver los detalles del pedido, cliente y facturación');
-    cy.get('.woocommerce-order-details').should('be.visible'); cy.get('.woocommerce-customer-details').should('be.visible');
+    cy.get('.woocommerce-order-details').should('be.visible'); 
+    cy.get('.woocommerce-customer-details').should('be.visible');
 });
 
-Then("Verifico que puedo ver el número de pedido, fecha And estado", () => {
+Then("Verifico que puedo ver el número de pedido, fecha y estado", () => {
     cy.log('🔍 Ejecutando: Verifico que puedo ver el número de pedido, fecha y estado');
-    cy.get('.order-number').should('be.visible'); cy.get('.order-date').should('be.visible');
+    cy.get('.order-number').should('be.visible'); 
+    cy.get('.order-date').should('be.visible');
 });
 
 When("Hago click en el enlace Address", () => {
@@ -82,7 +77,7 @@ When("Hago click en el enlace Address", () => {
     cy.get('.woocommerce-MyAccount-navigation-link--edit-address a').click();
 });
 
-Then("Verifico que puedo ver las direcciones de facturación And envío", () => {
+Then("Verifico que puedo ver las direcciones de facturación y envío", () => {
     cy.log('🔍 Ejecutando: Verifico que puedo ver las direcciones de facturación y envío');
     cy.get('.woocommerce-address-fields').should('be.visible');
 });

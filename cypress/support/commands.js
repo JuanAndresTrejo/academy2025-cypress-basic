@@ -20,6 +20,12 @@ Cypress.Commands.add('mapPageElements', (options = {}) => {
         saveToFile = false 
     } = options;
     
+    cy.log('🗺️ Iniciando mapeo dinámico de elementos...');
+    
+    // Esperar que la página esté cargada
+    cy.get('body').should('be.visible');
+    cy.wait(1000); // Dar tiempo para que se carguen todos los elementos
+    
     cy.window().then((win) => {
         const elements = {
             metadata: {
@@ -34,91 +40,138 @@ Cypress.Commands.add('mapPageElements', (options = {}) => {
             containers: []
         };
         
-        // Mapear navegación
-        if (includeNavigation) {
-            cy.get('nav, .nav, .navbar, .navigation, header').then($nav => {
-                $nav.each((index, nav) => {
-                    const navElements = Cypress.$(nav).find('a, button, [role="button"]');
-                    navElements.each((i, el) => {
-                        const element = {
-                            text: Cypress.$(el).text().trim(),
-                            href: Cypress.$(el).attr('href'),
-                            tag: el.tagName.toLowerCase(),
-                            selectors: [
-                                el.id ? `#${el.id}` : null,
-                                el.className ? `.${el.className.split(' ')[0]}` : null,
-                                `${el.tagName.toLowerCase()}:contains('${Cypress.$(el).text().trim()}')`
-                            ].filter(Boolean),
-                            isInteractive: true,
-                            position: { x: el.offsetLeft, y: el.offsetTop }
-                        };
-                        elements.navigation.push(element);
-                    });
+        // Procesar todo en un solo then block para evitar problemas de timing
+        return cy.get('body').then($body => {
+            
+            // Mapear navegación si está habilitado
+            if (includeNavigation) {
+                const navSelectors = 'nav, .nav, .navbar, .navigation, header, .menu, [role="navigation"]';
+                const $navElements = $body.find(navSelectors);
+                
+                $navElements.each((index, nav) => {
+                    const $nav = Cypress.$(nav);
+                    if ($nav.is(':visible')) {
+                        // Buscar elementos interactivos dentro de la navegación
+                        const navItems = $nav.find('a, button, [role="button"], [role="menuitem"]');
+                        navItems.each((i, el) => {
+                            const $el = Cypress.$(el);
+                            const text = $el.text().trim();
+                            if (text.length > 0) {
+                                const element = {
+                                    text: text,
+                                    href: $el.attr('href'),
+                                    tag: el.tagName.toLowerCase(),
+                                    selectors: [
+                                        el.id ? `#${el.id}` : null,
+                                        el.className ? `.${el.className.split(' ')[0]}` : null,
+                                        `${el.tagName.toLowerCase()}:contains('${text}')`
+                                    ].filter(Boolean),
+                                    isInteractive: true,
+                                    position: { x: el.offsetLeft || 0, y: el.offsetTop || 0 }
+                                };
+                                elements.navigation.push(element);
+                            }
+                        });
+                    }
                 });
-            });
-        }
-        
-        // Mapear botones
-        if (includeButtons) {
-            cy.get('button, input[type="button"], input[type="submit"], .btn').then($buttons => {
+            }
+            
+            // Mapear botones si está habilitado
+            if (includeButtons) {
+                const buttonSelectors = 'button, input[type="button"], input[type="submit"], .btn, [role="button"]';
+                const $buttons = $body.find(buttonSelectors);
+                
                 $buttons.each((index, btn) => {
-                    const element = {
-                        text: Cypress.$(btn).text().trim() || Cypress.$(btn).val(),
-                        tag: btn.tagName.toLowerCase(),
-                        type: Cypress.$(btn).attr('type'),
-                        selectors: [
-                            btn.id ? `#${btn.id}` : null,
-                            btn.className ? `.${btn.className.split(' ')[0]}` : null,
-                            `${btn.tagName.toLowerCase()}[type="${Cypress.$(btn).attr('type')}"]`
-                        ].filter(Boolean),
-                        isInteractive: true
-                    };
-                    elements.buttons.push(element);
+                    const $btn = Cypress.$(btn);
+                    if ($btn.is(':visible')) {
+                        const text = $btn.text().trim() || $btn.val() || $btn.attr('value') || '';
+                        const element = {
+                            text: text,
+                            tag: btn.tagName.toLowerCase(),
+                            type: $btn.attr('type') || 'button',
+                            selectors: [
+                                btn.id ? `#${btn.id}` : null,
+                                btn.className ? `.${btn.className.split(' ')[0]}` : null,
+                                btn.tagName.toLowerCase() + ($btn.attr('type') ? `[type="${$btn.attr('type')}"]` : '')
+                            ].filter(Boolean),
+                            isInteractive: true
+                        };
+                        elements.buttons.push(element);
+                    }
                 });
-            });
-        }
-        
-        // Mapear inputs
-        if (includeInputs) {
-            cy.get('input:not([type="button"]):not([type="submit"]), textarea, select').then($inputs => {
+            }
+            
+            // Mapear inputs si está habilitado
+            if (includeInputs) {
+                const inputSelectors = 'input:not([type="button"]):not([type="submit"]), textarea, select';
+                const $inputs = $body.find(inputSelectors);
+                
                 $inputs.each((index, input) => {
-                    const element = {
-                        name: Cypress.$(input).attr('name'),
-                        type: Cypress.$(input).attr('type') || 'text',
-                        placeholder: Cypress.$(input).attr('placeholder'),
-                        tag: input.tagName.toLowerCase(),
-                        selectors: [
-                            input.id ? `#${input.id}` : null,
-                            input.name ? `[name="${input.name}"]` : null,
-                            input.className ? `.${input.className.split(' ')[0]}` : null
-                        ].filter(Boolean),
-                        isInteractive: true
-                    };
-                    elements.inputs.push(element);
+                    const $input = Cypress.$(input);
+                    if ($input.is(':visible')) {
+                        const element = {
+                            name: $input.attr('name') || '',
+                            type: $input.attr('type') || 'text',
+                            placeholder: $input.attr('placeholder') || '',
+                            tag: input.tagName.toLowerCase(),
+                            selectors: [
+                                input.id ? `#${input.id}` : null,
+                                input.name ? `[name="${input.name}"]` : null,
+                                input.className ? `.${input.className.split(' ')[0]}` : null
+                            ].filter(Boolean),
+                            isInteractive: true
+                        };
+                        elements.inputs.push(element);
+                    }
                 });
+            }
+            
+            // También mapear enlaces adicionales
+            const $links = $body.find('a[href]');
+            $links.each((index, link) => {
+                const $link = Cypress.$(link);
+                if ($link.is(':visible')) {
+                    const text = $link.text().trim();
+                    if (text.length > 0 && text.length < 100) {
+                        const element = {
+                            text: text,
+                            href: $link.attr('href'),
+                            tag: 'a',
+                            selectors: [
+                                link.id ? `#${link.id}` : null,
+                                link.className ? `.${link.className.split(' ')[0]}` : null,
+                                `a:contains('${text}')`
+                            ].filter(Boolean),
+                            isInteractive: true
+                        };
+                        elements.links.push(element);
+                    }
+                }
             });
-        }
-        
-        // Calcular total
-        elements.metadata.totalElements = 
-            elements.navigation.length + 
-            elements.buttons.length + 
-            elements.inputs.length;
-        
-        // Guardar en alias para uso posterior
-        cy.wrap(elements).as('discoveredElements');
-        
-        // Guardar archivo si se solicita
-        if (saveToFile) {
-            cy.task('saveDiscoveredElements', elements);
-        }
-        
-        cy.log(`📊 Elementos mapeados: ${elements.metadata.totalElements}`);
-        cy.log(`🧭 Navegación: ${elements.navigation.length}`);
-        cy.log(`🔘 Botones: ${elements.buttons.length}`);
-        cy.log(`📝 Inputs: ${elements.inputs.length}`);
-        
-        return cy.wrap(elements);
+            
+            // Calcular total
+            elements.metadata.totalElements = 
+                elements.navigation.length + 
+                elements.buttons.length + 
+                elements.inputs.length + 
+                elements.links.length;
+            
+            // Guardar en alias para uso posterior
+            cy.wrap(elements).as('discoveredElements');
+            
+            // Guardar archivo si se solicita
+            if (saveToFile) {
+                cy.task('saveDiscoveredElements', elements);
+            }
+            
+            cy.log(`📊 Elementos mapeados: ${elements.metadata.totalElements}`);
+            cy.log(`🧭 Navegación: ${elements.navigation.length}`);
+            cy.log(`🔘 Botones: ${elements.buttons.length}`);
+            cy.log(`📝 Inputs: ${elements.inputs.length}`);
+            cy.log(`🔗 Enlaces: ${elements.links.length}`);
+            
+            return cy.wrap(elements);
+        });
     });
 });
 

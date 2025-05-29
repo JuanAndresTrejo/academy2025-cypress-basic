@@ -264,8 +264,23 @@ ${scenarios}`;
         const newSteps = uniqueSteps
             .filter(step => !stepIndexer.findExistingStep(step))
             .map(step => {
-                const stepType = step.startsWith('Verifico') ? 'Then' : 
-                               step.startsWith('Ingreso') ? 'And' : 'When';
+                // Determinar el tipo de step correctamente (NO usar And)
+                let stepType;
+                if (step.startsWith('Verifico') || step.startsWith('Compruebo') || 
+                    step.startsWith('Valido') || step.startsWith('Veo') ||
+                    step.toLowerCase().includes('debe')) {
+                    stepType = 'Then';
+                } else if (step.startsWith('Ingreso') || step.startsWith('Hago') ||
+                          step.startsWith('Selecciono') || step.startsWith('Escribo') ||
+                          step.startsWith('Completo') || step.startsWith('Realizo')) {
+                    stepType = 'When';
+                } else if (step.startsWith('Navego') || step.startsWith('Estoy') ||
+                          step.startsWith('Abro') || step.startsWith('Cargo')) {
+                    stepType = 'Given';
+                } else {
+                    // Default seguro
+                    stepType = 'When';
+                }
                 
                 // Usar implementación predefinida o generar una básica
                 const implementation = stepImplementations[step] || 

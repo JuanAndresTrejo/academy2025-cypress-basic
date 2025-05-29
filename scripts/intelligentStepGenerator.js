@@ -252,8 +252,43 @@ class IntelligentStepGenerator {
             }
         }
         
-        // Default: And para casos ambiguos
-        return 'And';
+        // Lógica para casos ambiguos (NO usar And como default)
+        // Given: Estados iniciales, navegación, configuración
+        if (lowerText.includes('naveg') || lowerText.includes('visit') || 
+            lowerText.includes('estoy') || lowerText.includes('cargo') ||
+            lowerText.includes('abro') || lowerText.includes('inicio')) {
+            return 'Given';
+        }
+        
+        // When: Acciones del usuario, interacciones
+        if (lowerText.includes('click') || lowerText.includes('ingres') ||
+            lowerText.includes('seleccion') || lowerText.includes('presion') ||
+            lowerText.includes('escribo') || lowerText.includes('completo') ||
+            lowerText.includes('realizo') || lowerText.includes('ejecuto') ||
+            lowerText.includes('busco') || lowerText.includes('lleno')) {
+            return 'When';
+        }
+        
+        // Then: Verificaciones, validaciones, comprobaciones
+        if (lowerText.includes('verific') || lowerText.includes('valid') ||
+            lowerText.includes('comprueb') || lowerText.includes('confirm') ||
+            lowerText.includes('debe') || lowerText.includes('veo') ||
+            lowerText.includes('muestra') || lowerText.includes('aparece') ||
+            lowerText.includes('espero que') || lowerText.includes('puedo ver')) {
+            return 'Then';
+        }
+        
+        // Default basado en verbos de acción
+        if (lowerText.match(/^(hago|realizo|ejecuto|busco|selecciono|ingreso|escribo)/)) {
+            return 'When';
+        }
+        
+        if (lowerText.match(/^(verifico|confirmo|valido|compruebo|veo|debe)/)) {
+            return 'Then';
+        }
+        
+        // Si todo falla, usar When como default más seguro
+        return 'When';
     }
     
     categorizeStep(text) {

@@ -211,11 +211,13 @@ function convertirPasosAGherkin(pasos, stepIndexer) {
                           pasoLimpio.toLowerCase().includes('opt') ||
                           pasoLimpio.toLowerCase().includes('place order')) {
                     pasoTransformado = `When ${pasoLimpio}`;
-                } else if (pasoLimpio.toLowerCase().includes('now') ||
-                          pasoLimpio.toLowerCase().includes('and')) {
-                    pasoTransformado = `And ${pasoLimpio}`;
+                } else if (pasoLimpio.toLowerCase().includes('naveg') ||
+                          pasoLimpio.toLowerCase().includes('open') ||
+                          pasoLimpio.toLowerCase().includes('load') ||
+                          pasoLimpio.toLowerCase().includes('start')) {
+                    pasoTransformado = `Given ${pasoLimpio}`;
                 } else {
-                    // Por defecto, asumir que es un When
+                    // Por defecto, asumir que es un When (NO usar And)
                     pasoTransformado = `When ${pasoLimpio}`;
                 }
             }
@@ -276,8 +278,24 @@ ${scenarios}`;
         const newSteps = uniqueSteps
             .filter(step => !stepIndexer.findExistingStep(step))
             .map(step => {
-                const stepType = step.startsWith('Verifico') ? 'Then' : 
-                               step.startsWith('Ingreso') ? 'And' : 'When';
+                // Determinar el tipo de step correctamente (NO usar And)
+                let stepType;
+                if (step.startsWith('Verifico') || step.startsWith('Compruebo') || 
+                    step.startsWith('Valido') || step.startsWith('Veo') ||
+                    step.toLowerCase().includes('debe')) {
+                    stepType = 'Then';
+                } else if (step.startsWith('Ingreso') || step.startsWith('Hago') ||
+                          step.startsWith('Selecciono') || step.startsWith('Escribo') ||
+                          step.startsWith('Completo') || step.startsWith('Realizo')) {
+                    stepType = 'When';
+                } else if (step.startsWith('Navego') || step.startsWith('Estoy') ||
+                          step.startsWith('Abro') || step.startsWith('Cargo')) {
+                    stepType = 'Given';
+                } else {
+                    // Default seguro
+                    stepType = 'When';
+                }
+                
                 const methodName = step.toLowerCase().replace(/[^a-z0-9]+/g, '_');
                 
                 return `${stepType}('${step}', () => {
