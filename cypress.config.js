@@ -225,8 +225,9 @@ module.exports = defineConfig({
   e2e: {
     setupNodeEvents,
     experimentalOriginDependencies: true,
+    experimentalStudio: true,
     hideXHRInCommandLog: false,
-    specPattern: ["cypress/e2e/features/**/*.feature"],
+    specPattern: ["cypress/e2e/features/*.feature"],
     baseUrl: "http://practice.automationtesting.in",
     projectId: "Id_Key",
     viewportWidth: 1920,
