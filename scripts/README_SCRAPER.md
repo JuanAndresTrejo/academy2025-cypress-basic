@@ -1,8 +1,8 @@
-# 🕵️‍♂️ Sistema de Scraper Inteligente para Cypress
+# 🕵️‍♂️ Sistema de Scraper para Cypress
 
 ## 📋 Descripción
 
-Este sistema permite **mapear automáticamente** todos los elementos de una página web y generar locators optimizados para usar en tests de Cypress. Funciona como un **scraper inteligente** que categoriza elementos y crea selectores robustos.
+Este sistema permite **mapear automáticamente** todos los elementos de una página web y generar locators optimizados para usar en tests de Cypress. Funciona como un **scraper** que categoriza elementos y crea selectores robustos.
 
 ## 🎯 Características Principales
 

@@ -1,4 +1,4 @@
-# 🚀 Scripts del Sistema de Scraper Inteligente Unificado
+# 🚀 Scripts del Sistema de Scraper Unificado
 
 Este directorio contiene el script unificado que procesa automáticamente los archivos generados por el sistema de scraper de Cypress y crea locators optimizados junto con archivos de prueba completos.
 
@@ -50,7 +50,7 @@ node scripts/unifiedScraperProcessor.js
 - Selecciona automáticamente el archivo más reciente
 
 ### 📝 Generación de Locators Optimizados
-- **Categorización inteligente**: navegación, botones, inputs, enlaces, contenedores, imágenes
+- **Categorización**: navegación, botones, inputs, enlaces, contenedores, imágenes
 - **Selectores robustos**: Prioriza ID > data-testid > clases específicas
 - **Selectores alternativos**: Incluye fallbacks para mayor robustez
 - **Metadatos completos**: Descripción, posición, interactividad

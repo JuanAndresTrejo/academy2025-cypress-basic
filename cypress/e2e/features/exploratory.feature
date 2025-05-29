@@ -1,4 +1,4 @@
-Feature: Exploración Automática de Elementos - Scraper Inteligente
+Feature: Exploración Automática de Elementos - Scraper
 
     Como QA automatizador
     Quiero mapear automáticamente todos los elementos de la página

@@ -15,7 +15,20 @@
     "cy:spec": "cypress run --spec **/*.spec.js",
     "cy:reporter": "cypress run --reporter reporters/lippia-reporter/lippia-reporter.js",
     "cy:local": "cypress run",
-    "cy:run": "cypress run --record --key projectId"
+    "cy:run": "cypress run --record --key projectId",
+    "orchestrate:help": "node scripts/runOrchestration.js help",
+    "orchestrate:full": "node scripts/runOrchestration.js full",
+    "orchestrate:complete": "node scripts/runOrchestration.js complete",
+    "orchestrate:steps": "node scripts/runOrchestration.js steps",
+    "orchestrate:fix-steps": "node scripts/runOrchestration.js fix-steps",
+    "orchestrate:scraper": "node scripts/runOrchestration.js scraper",
+    "orchestrate:unified": "node scripts/runOrchestration.js unified",
+    "orchestrate:clean": "node scripts/runOrchestration.js clean",
+    "orchestrate:backup": "node scripts/runOrchestration.js backup",
+    "master:orchestrate": "node scripts/masterOrchestrator.js",
+    "steps:manage": "node scripts/intelligentStepManager.js",
+    "unified:process": "node scripts/unifiedScraperProcessor.js",
+    "scraper:explore": "npx cypress run --spec \"cypress/e2e/features/exploratory.feature\" --headed"
   },
   "keywords": [
     "cypress"
@@ -33,7 +46,8 @@
     "cypress": "^14.4.0",
     "esbuild": "^0.25.4",
     "glob": "^11.0.2",
-    "multiple-cucumber-html-reporter": "3.0.1"
+    "multiple-cucumber-html-reporter": "3.0.1",
+    "acorn": "^8.14.0"
   },
   "bugs": {
     "url": "https://github.com/JuanAndresTrejo/academy2025-cypress-basic/issues"
