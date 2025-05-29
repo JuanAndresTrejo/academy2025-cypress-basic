@@ -564,14 +564,51 @@ When("Realizo exploración completa de la página home", () => {
     // Crear directorio para archivos descubiertos
     cy.task('ensureDir', 'cypress/fixtures/discovered');
     
+    // Array para almacenar requests capturados
+    const capturedRequests = [];
+    
     // Ejecutar todos los pasos de exploración en secuencia
     cy.then(() => {
         cy.log('📍 Paso 1: Configurando interceptors de red...');
-        // Configurar interceptores básicos
-        cy.intercept('GET', '**').as('getRequests');
-        cy.intercept('POST', '**').as('postRequests');
-        cy.intercept('**/*.js').as('jsRequests');
-        cy.intercept('**/*.css').as('cssRequests');
+        // Configurar interceptores básicos que capturan requests
+        cy.intercept('GET', '**', (req) => {
+            capturedRequests.push({
+                method: req.method,
+                url: req.url,
+                timestamp: new Date().toISOString(),
+                headers: req.headers,
+                type: 'GET'
+            });
+        }).as('getRequests');
+        
+        cy.intercept('POST', '**', (req) => {
+            capturedRequests.push({
+                method: req.method,
+                url: req.url,
+                timestamp: new Date().toISOString(),
+                headers: req.headers,
+                body: req.body,
+                type: 'POST'
+            });
+        }).as('postRequests');
+        
+        cy.intercept('**/*.js', (req) => {
+            capturedRequests.push({
+                method: req.method,
+                url: req.url,
+                timestamp: new Date().toISOString(),
+                type: 'JavaScript'
+            });
+        }).as('jsRequests');
+        
+        cy.intercept('**/*.css', (req) => {
+            capturedRequests.push({
+                method: req.method,
+                url: req.url,
+                timestamp: new Date().toISOString(),
+                type: 'CSS'
+            });
+        }).as('cssRequests');
     });
     
     cy.then(() => {
@@ -591,11 +628,14 @@ When("Realizo exploración completa de la página home", () => {
                         const navItems = $el.find('a, button, [role="menuitem"]').toArray();
                         
                         navItems.forEach(item => {
+                            const selectors = generateUniqueSelector(item);
                             const text = item.textContent?.trim() || '';
                             if (text.length > 0) {
                                 navigationElements.push({
                                     text: text,
-                                    selector: selector,
+                                    selectors: selectors,
+                                    href: item.getAttribute('href') || null,
+                                    parent: selector,
                                     tag: item.tagName.toLowerCase()
                                 });
                             }
@@ -607,6 +647,7 @@ When("Realizo exploración completa de la página home", () => {
         
         cy.writeFile('cypress/fixtures/discovered/navigation-map.json', {
             timestamp: new Date().toISOString(),
+            url: window.location.href,
             navigationElements: navigationElements,
             totalNavItems: navigationElements.length
         });
@@ -624,6 +665,10 @@ When("Realizo exploración completa de la página home", () => {
                 buttons: [],
                 links: [],
                 inputs: [],
+                images: [],
+                texts: [],
+                containers: [],
+                interactive: [],
                 metadata: {
                     url: window.location.href,
                     timestamp: new Date().toISOString(),
@@ -636,21 +681,48 @@ When("Realizo exploración completa de la página home", () => {
                 
                 if ($el.is(':visible') && 
                     (element.tagName !== 'SCRIPT') && 
-                    (element.tagName !== 'STYLE')) {
+                    (element.tagName !== 'STYLE') &&
+                    (element.tagName !== 'META') &&
+                    (element.tagName !== 'LINK')) {
                     
-                    elementCount++;
                     const category = categorizeElement(element);
-                    const text = element.textContent?.trim().substring(0, 50) || '';
+                    const selectors = generateUniqueSelector(element);
+                    const text = element.textContent?.trim().substring(0, 100) || '';
                     
                     const elementInfo = {
-                        id: elementCount,
+                        id: elementCount++,
                         tag: element.tagName.toLowerCase(),
+                        selectors: selectors,
                         text: text,
-                        category: category
+                        attributes: {
+                            id: element.id || null,
+                            class: element.className || null,
+                            name: element.getAttribute('name') || null,
+                            type: element.getAttribute('type') || null,
+                            role: element.getAttribute('role') || null,
+                            'data-testid': element.getAttribute('data-testid') || null,
+                            href: element.getAttribute('href') || null,
+                            src: element.getAttribute('src') || null
+                        },
+                        position: {
+                            x: element.offsetLeft || 0,
+                            y: element.offsetTop || 0,
+                            width: element.offsetWidth || 0,
+                            height: element.offsetHeight || 0
+                        },
+                        isInteractive: !!(element.onclick || 
+                                        element.tagName === 'A' || 
+                                        element.tagName === 'BUTTON' || 
+                                        element.tagName === 'INPUT' ||
+                                        element.getAttribute('role') === 'button')
                     };
                     
+                    // Agregar a la categoría correspondiente
                     if (pageElements[category]) {
                         pageElements[category].push(elementInfo);
+                    } else {
+                        if (!pageElements.others) pageElements.others = [];
+                        pageElements.others.push(elementInfo);
                     }
                 }
             });
@@ -689,6 +761,38 @@ When("Realizo exploración completa de la página home", () => {
         
         cy.writeFile('cypress/pages/locators/AutoGeneratedLocators.json', basicLocators);
         cy.log('📝 Locators básicos generados en: cypress/pages/locators/AutoGeneratedLocators.json');
+    });
+
+    // Nuevo paso para guardar requests capturados
+    cy.then(() => {
+        cy.log('📍 Paso 5: Guardando requests de red capturados...');
+        
+        // Esperar un poco para capturar requests adicionales
+        cy.wait(2000);
+        
+        // Crear el archivo de requests de red
+        const networkData = {
+            metadata: {
+                capturedAt: new Date().toISOString(),
+                url: window.location.href,
+                totalRequests: capturedRequests.length,
+                description: 'Requests de red capturados durante la exploración'
+            },
+            requests: capturedRequests,
+            summary: {
+                getRequests: capturedRequests.filter(r => r.method === 'GET').length,
+                postRequests: capturedRequests.filter(r => r.method === 'POST').length,
+                jsRequests: capturedRequests.filter(r => r.type === 'JavaScript').length,
+                cssRequests: capturedRequests.filter(r => r.type === 'CSS').length
+            }
+        };
+        
+        cy.writeFile('cypress/fixtures/discovered/network-requests.json', networkData);
+        cy.log(`🌐 Requests guardados: ${capturedRequests.length} requests capturados`);
+        cy.log(`   • GET: ${networkData.summary.getRequests}`);
+        cy.log(`   • POST: ${networkData.summary.postRequests}`);
+        cy.log(`   • JavaScript: ${networkData.summary.jsRequests}`);
+        cy.log(`   • CSS: ${networkData.summary.cssRequests}`);
     });
     
     cy.log('✅ Exploración completa finalizada');
