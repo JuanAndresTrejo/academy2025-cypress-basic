@@ -1,117 +1,87 @@
 import { Given, When, Then, And } from "@badeball/cypress-cucumber-preprocessor";
-import ShopLocators from '@pages/locators/ShopLocators.json';
+import SauceDemoPage from '@pages/SauceDemoPage';
 
-// Step para login específico del shop
+// Step para login específico del shop (SauceDemo)
 Given("Me logueo como usuario correctamente - shop demo", () => {
-    cy.log('👤 Iniciando login para shop demo...');
-    cy.visit('/my-account/');
-    cy.wait(2000);
-    
-    // Verificar si ya está logueado mirando la URL o elementos específicos
-    cy.url().then(url => {
-        if (url.includes('/my-account/') && !url.includes('lost-password')) {
-            cy.get('body').then($body => {
-                if ($body.find(ShopLocators.inpUsernameLogin).length > 0) {
-                    // Realizar login
-                    cy.log('🔑 Realizando login...');
-                    cy.get(ShopLocators.inpUsernameLogin).clear().type('academyCypress_usuarioNormal@crowdaronline.com');
-                    cy.get(ShopLocators.inpPassLogin).clear().type('Crowdar.2025!');
-                    cy.get(ShopLocators.btnIniciarSesionLogin).click();
-                    cy.wait(3000);
-                } else {
-                    cy.log('✅ Usuario ya está logueado');
-                }
-            });
-        }
-    });
-    
-    // Verificar que el login fue exitoso
-    cy.url().should('include', '/my-account/');
-    cy.get('body').should('contain', 'Dashboard');
+    cy.log('👤 Iniciando login para shop demo (SauceDemo)...');
+    SauceDemoPage.visitarPagina();
+    SauceDemoPage.realizarLogin('standard_user', 'secret_sauce');
+    SauceDemoPage.verificarLoginExitoso();
+    cy.log('✅ Login exitoso en SauceDemo');
 });
 
-// Step para ingresar al shop
+// Step para ingresar al shop (SauceDemo - ya estamos en inventory después del login)
 When("Ingreso al shop", () => {
-    cy.log('🛒 Navegando al shop...');
-    cy.get(ShopLocators.btnGoToShop).click();
-    cy.wait(2000);
-    cy.url().should('include', '/shop');
+    cy.log('🛒 Verificando que estamos en la página de productos (SauceDemo)...');
+    cy.url().should('include', '/inventory.html');
+    SauceDemoPage.verificarProductosVisibles();
+    cy.log('✅ Estamos en la página de productos');
 });
 
-// Step para buscar por rango de precio
+// Step para buscar por rango de precio (SauceDemo - filtrar por precio)
 When("Busco por rango de precio, de medio a mayor", () => {
-    cy.log('💰 Configurando rango de precio...');
-    // Verificar que el slider de precio esté visible
-    cy.get(ShopLocators.priceSlider).should('be.visible');
-    cy.log('⚠️ Rango de precio configurado (implementación básica)');
+    cy.log('💰 Filtrando productos por precio de menor a mayor (SauceDemo)...');
+    SauceDemoPage.filtrarPorPrecioLowToHigh();
+    cy.log('✅ Filtro de precio aplicado');
 });
 
-// Step para ingresar al rango marcado
+// Step para ingresar al rango marcado (SauceDemo - el filtro ya se aplicó)
 When("Ingreso al rango de busqueda marcada", () => {
-    cy.log('🔍 Aplicando filtro de rango...');
-    cy.get(ShopLocators.btnFiltrarPrecio).click();
-    cy.wait(2000);
-});
-
-// Step para verificar rango de búsqueda
-Then("Verifico que ingreso al rango de busqueda deseada", () => {
-    cy.log('✅ Verificando rango de búsqueda aplicado...');
-    cy.url().should('include', '/shop');
-    // Verificar que hay parámetros de precio en la URL
-    cy.url().should('include', 'min_price');
-    cy.url().should('include', 'max_price');
-    // Verificar que la página cargó correctamente
-    cy.get('body').should('be.visible');
+    cy.log('🔍 Verificando que el filtro de precio está aplicado...');
+    // El filtro ya se aplicó en el step anterior, solo verificamos
+    cy.url().should('include', '/inventory.html');
     cy.log('✅ Filtro de precio aplicado correctamente');
 });
 
-// Step para agregar productos al carrito
-When("Agrego {int} productos al carrito", (cantidad) => {
-    cy.log(`🛒 Agregando ${cantidad} productos al carrito...`);
-    for (let i = 0; i < cantidad; i++) {
-        cy.get('.add_to_cart_button').eq(i).click();
-        cy.wait(1000);
-    }
+// Step para verificar rango de búsqueda (SauceDemo - verificar ordenamiento por precio)
+Then("Verifico que ingreso al rango de busqueda deseada", () => {
+    cy.log('✅ Verificando que los productos están ordenados por precio...');
+    cy.url().should('include', '/inventory.html');
+    SauceDemoPage.verificarProductosOrdenadosPorPrecio();
+    cy.log('✅ Productos ordenados por precio correctamente');
 });
 
-// Step para verificar productos en carrito
+// Step para agregar productos al carrito (SauceDemo)
+When("Agrego {int} productos al carrito", (cantidad) => {
+    cy.log(`🛒 Agregando ${cantidad} productos al carrito (SauceDemo)...`);
+    for (let i = 0; i < cantidad; i++) {
+        SauceDemoPage.agregarProductoAlCarritoPorIndice(i);
+        cy.wait(500);
+    }
+    SauceDemoPage.verificarContadorCarrito(cantidad);
+    cy.log(`✅ ${cantidad} productos agregados al carrito`);
+});
+
+// Step para verificar productos en carrito (SauceDemo)
 Then("Verifico que se agregaron los productos al carrito correctamente {string}", (mensaje) => {
-    cy.log('✅ Verificando productos en carrito...');
+    cy.log(`✅ Verificando productos en carrito (SauceDemo) - ${mensaje}...`);
     // Verificar que el contador del carrito muestra productos
-    cy.get('body').should('contain.text', 'items');
+    cy.get('.shopping_cart_badge').should('be.visible');
     cy.log(`📦 Productos agregados correctamente - ${mensaje}`);
 });
 
-// Step para eliminar productos
+// Step para eliminar productos (SauceDemo)
 When("elimino productos seleccionados", () => {
-    cy.log('🗑️ Eliminando productos del carrito...');
-    // Navegar al carrito usando la URL correcta
-    cy.visit('/basket/', { failOnStatusCode: false });
-    cy.wait(3000);
+    cy.log('🗑️ Eliminando productos del carrito (SauceDemo)...');
+    // Ir al carrito
+    SauceDemoPage.irAlCarrito();
+    SauceDemoPage.verificarPaginaCarrito();
     
-    // Verificar si estamos en la página del carrito
-    cy.url().should('include', '/basket');
-    
-    // Buscar y eliminar productos si existen
-    cy.get('body').then($body => {
-        if ($body.find('.cart_item').length > 0) {
-            cy.log('🗑️ Eliminando productos encontrados...');
-            // Eliminar productos uno por uno
-            cy.get('.cart_item').each(($item, index) => {
-                cy.get('.cart_item').first().find('.remove').click();
-                cy.wait(2000);
-            });
-        } else {
-            cy.log('⚠️ No hay productos en el carrito para eliminar');
+    // Eliminar todos los productos del carrito
+    cy.get('.cart_item').then(($items) => {
+        const cantidad = $items.length;
+        for (let i = 0; i < cantidad; i++) {
+            SauceDemoPage.eliminarPrimerProductoDelCarrito();
+            cy.wait(500);
         }
     });
+    cy.log('✅ Productos eliminados del carrito');
 });
 
-// Step para verificar carrito vacío
+// Step para verificar carrito vacío (SauceDemo)
 Then("Verifico que no hay productos agregados", () => {
-    cy.log('✅ Verificando carrito vacío...');
-    // Verificar que aparece el mensaje de carrito vacío
-    cy.get('body').should('contain.text', 'Your basket is currently empty');
+    cy.log('✅ Verificando carrito vacío (SauceDemo)...');
+    SauceDemoPage.verificarCarritoVacio();
     cy.log('📦 Carrito verificado como vacío');
 });
 

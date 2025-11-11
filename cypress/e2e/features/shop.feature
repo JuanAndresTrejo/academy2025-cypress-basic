@@ -16,7 +16,6 @@ Feature: 02 - Crowdar Academy 2025 - Shop Store
         And Agrego 3 productos al carrito
         Then Verifico que se agregaron los productos al carrito correctamente 'Moved Permanently'
 
-
     @focus @shop @rangoPrecio @detalle
     Scenario: Vaciar Carrito de compras
         When Ingreso al shop
