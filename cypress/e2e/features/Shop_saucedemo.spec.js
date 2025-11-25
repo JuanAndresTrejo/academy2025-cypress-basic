@@ -260,7 +260,6 @@ it('Shop_carrito', function() {
   cy.get('[data-test="login-button"]').click();
   cy.get('[data-test="add-to-cart-sauce-labs-backpack"]').click();
   cy.get('[data-test="add-to-cart-sauce-labs-bolt-t-shirt"]').click();
-  cy.get('[data-test="add-to-cart-sauce-labs-onesie"]').click();
   cy.get('[data-test="add-to-cart-sauce-labs-bike-light"]').click();
   cy.get('[data-test="add-to-cart-sauce-labs-fleece-jacket"]').click();
   cy.get('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]').click();

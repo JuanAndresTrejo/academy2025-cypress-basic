@@ -360,4 +360,61 @@ Cypress.Commands.add('runUnifiedProcessor', (options = {}) => {
     });
 });
 
+/**
+ * Comando personalizado para mostrar un prompt interactivo al usuario
+ * NOTA: Este comando solo se ejecuta cuando cy.prompt() se llama con sintaxis antigua (string)
+ * Si se llama con un array, Cypress intentará usar el comando oficial primero
+ * 
+ * Solo funciona en modo interactivo (headed mode con cypress open), no en modo headless
+ * En modo headless, usará el valor por defecto o variables de entorno
+ * 
+ * IMPORTANTE: Este comando usa window.prompt() del navegador, que puede ser bloqueado
+ * por algunos navegadores o configuraciones. En ese caso, usará el valor por defecto.
+ * 
+ * @param {string} message - Mensaje a mostrar en el prompt
+ * @param {string} defaultValue - Valor por defecto si el usuario cancela o en modo headless
+ * @returns {Cypress.Chainable} - Promise que resuelve con el valor ingresado o el valor por defecto
+ * 
+ * @example
+ * // Comando personalizado (sintaxis antigua - solo para prompts interactivos simples)
+ * cy.userPrompt('Ingrese su usuario:', 'standard_user').then((username) => {
+ *   cy.log(`Usuario ingresado: ${username}`);
+ * });
+ */
+Cypress.Commands.add('userPrompt', (message, defaultValue = '') => {
+    cy.log(`💬 Prompt interactivo: ${message} (valor por defecto: ${defaultValue})`);
+    
+    // En modo headless o cuando prompt está bloqueado, usar valor por defecto
+    // Primero verificar si hay una variable de entorno configurada
+    const envValue = Cypress.env('PROMPT_VALUE');
+    if (envValue) {
+        cy.log(`📝 Usando valor de variable de entorno: ${envValue}`);
+        return cy.wrap(envValue);
+    }
+    
+    // Intentar usar window.prompt en el contexto del navegador
+    return cy.window().then((win) => {
+        try {
+            // window.prompt bloquea la ejecución hasta que el usuario responda
+            // Esto solo funciona en modo interactivo (cypress open)
+            const userInput = win.prompt(message, defaultValue);
+            
+            if (userInput === null) {
+                // Usuario canceló el prompt
+                cy.log(`❌ Usuario canceló el prompt. Usando valor por defecto: ${defaultValue}`);
+                return cy.wrap(defaultValue);
+            } else {
+                // Usuario ingresó un valor (puede ser string vacío)
+                const result = userInput || defaultValue;
+                cy.log(`✅ Valor recibido del prompt: ${result}`);
+                return cy.wrap(result);
+            }
+        } catch (error) {
+            // Si hay error (modo headless, prompt bloqueado, etc.), usar valor por defecto
+            cy.log(`⚠️ No se pudo mostrar el prompt (${error.message}). Usando valor por defecto: ${defaultValue}`);
+            return cy.wrap(defaultValue);
+        }
+    });
+});
+
 export {};

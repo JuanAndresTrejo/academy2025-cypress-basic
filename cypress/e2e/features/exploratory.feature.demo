@@ -15,8 +15,8 @@ Feature: Exploración Automática de Elementos - Scraper
         Then Genero archivo de locators optimizados
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
+          | user          | pass         |
+          | standard_user | secret_sauce |
 
     @exploratory @navigation @quick
     Scenario: Mapeo rápido de navegación principal
@@ -25,8 +25,8 @@ Feature: Exploración Automática de Elementos - Scraper
         Then Genero archivo de locators optimizados
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
+          | user          | pass         |
+          | standard_user | secret_sauce |
 
     @exploratory @navigation @network
     Scenario: Monitoreo de requests de red
@@ -36,8 +36,8 @@ Feature: Exploración Automática de Elementos - Scraper
         Then Verifico que se capturaron los requests correctamente
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
+          | user          | pass         |
+          | standard_user | secret_sauce |
 
     @exploratory @elements @detailed
     Scenario: Extracción detallada de todos los elementos
@@ -47,8 +47,8 @@ Feature: Exploración Automática de Elementos - Scraper
         And Verifico que los selectores generados son únicos
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
+          | user          | pass         |
+          | standard_user | secret_sauce |
 
     @exploratory @complete @full-scan
     Scenario: Exploración completa con todos los pasos
@@ -58,5 +58,5 @@ Feature: Exploración Automática de Elementos - Scraper
         And Verifico que los locators son válidos y utilizables 
 
         Examples:
-          | user                                            |   pass                |
-          | academyCypress_usuarioNormal@crowdaronline.com  |   Crowdar.2025!       |
+          | user          | pass         |
+          | standard_user | secret_sauce |
